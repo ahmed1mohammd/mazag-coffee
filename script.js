@@ -117,23 +117,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Header scroll effect
     let lastScrollTop = 0;
-    const header = document.querySelector('header');
+    const mainHeader = document.querySelector('header');
     
     window.addEventListener('scroll', function() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         
         if (scrollTop > lastScrollTop && scrollTop > 100) {
             // Scrolling down
-            header.style.transform = 'translateY(-100%)';
+            mainHeader.style.transform = 'translateY(-100%)';
         } else {
             // Scrolling up
-            header.style.transform = 'translateY(0)';
+            mainHeader.style.transform = 'translateY(0)';
         }
         
         lastScrollTop = scrollTop;
     });
     
-    header.style.transition = 'transform 0.3s ease';
+    mainHeader.style.transition = 'transform 0.3s ease';
 
     // QR Code interaction
     const qrCode = document.querySelector('.w-64.h-64.bg-white');
