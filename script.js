@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileMenuButton.id = 'mobile-menu-button';
     
     const nav = document.querySelector('nav');
-    const header = document.querySelector('header .container');
+    const headerContainer = document.querySelector('header .container'); // اسم متغير مختلف
     
     // Insert mobile menu button
-    header.appendChild(mobileMenuButton);
+    headerContainer.appendChild(mobileMenuButton);
     
     // Create mobile menu
     const mobileMenu = document.createElement('div');
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileNavLinks.className = 'flex flex-col space-y-4 p-4';
     mobileMenu.appendChild(mobileNavLinks);
     
-    header.parentElement.appendChild(mobileMenu);
+    headerContainer.parentElement.appendChild(mobileMenu);
     
     // Toggle mobile menu
     mobileMenuButton.addEventListener('click', function() {
@@ -52,30 +52,37 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Add to cart functionality
-    const addToCartButtons = document.querySelectorAll('button:contains("أضف للسلة")');
+    // Helper function to find buttons by text content (عربي فقط)
+    function findButtonsByText(text) {
+        return Array.from(document.querySelectorAll('button')).filter(btn => btn.textContent.trim() === text);
+    }
+
+    // Add to cart buttons
+    const addToCartButtons = findButtonsByText('أضف للسلة');
     addToCartButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Simple cart notification
             showNotification('تم إضافة المنتج إلى السلة!');
         });
     });
 
-    // Order now buttons
-    const orderButtons = document.querySelectorAll('button:contains("اطلب الآن"), button:contains("اكتشف قهوتنا المميزة")');
+    // Order buttons
+    const orderButtons = [
+        ...findButtonsByText('اطلب الآن'),
+        ...findButtonsByText('اكتشف قهوتنا المميزة')
+    ];
     orderButtons.forEach(button => {
         button.addEventListener('click', function() {
             showNotification('سيتم توجيهك إلى صفحة الطلب قريباً!');
         });
     });
 
-    // Rewards program button
-    const rewardsButton = document.querySelector('button:contains("اشترك في برنامج المكافآت")');
-    if (rewardsButton) {
-        rewardsButton.addEventListener('click', function() {
+    // Rewards button
+    const rewardsButtons = findButtonsByText('اشترك في برنامج المكافآت');
+    rewardsButtons.forEach(button => {
+        button.addEventListener('click', function() {
             showNotification('سيتم توجيهك إلى صفحة التسجيل في برنامج المكافآت!');
         });
-    }
+    });
 
     // Scroll animations
     const observerOptions = {
@@ -169,60 +176,9 @@ function showNotification(message) {
     
     // Hide notification after 3 seconds
     setTimeout(() => {
-        notification.style.transform = 'translateX(full)';
+        notification.style.transform = 'translateX(100%)'; // تم تصحيحها
         setTimeout(() => {
-            document.body.removeChild(notification);
+            if (notification.parentNode) notification.parentNode.removeChild(notification);
         }, 300);
     }, 3000);
 }
-
-// Helper function to find elements by text content
-function findElementsByText(text) {
-    const elements = [];
-    const walker = document.createTreeWalker(
-        document.body,
-        NodeFilter.SHOW_TEXT,
-        null,
-        false
-    );
-    
-    let node;
-    while (node = walker.nextNode()) {
-        if (node.textContent.includes(text)) {
-            elements.push(node.parentElement);
-        }
-    }
-    
-    return elements;
-}
-
-// Update the button selection to work with Arabic text
-document.addEventListener('DOMContentLoaded', function() {
-    // Add to cart buttons
-    const addToCartButtons = findElementsByText('أضف للسلة');
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            showNotification('تم إضافة المنتج إلى السلة!');
-        });
-    });
-
-    // Order buttons
-    const orderButtons = [
-        ...findElementsByText('اطلب الآن'),
-        ...findElementsByText('اكتشف قهوتنا المميزة')
-    ];
-    orderButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            showNotification('سيتم توجيهك إلى صفحة الطلب قريباً!');
-        });
-    });
-
-    // Rewards button
-    const rewardsButtons = findElementsByText('اشترك في برنامج المكافآت');
-    rewardsButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            showNotification('سيتم توجيهك إلى صفحة التسجيل في برنامج المكافآت!');
-        });
-    });
-});
-
