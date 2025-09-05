@@ -1,7 +1,17 @@
 // Coffee Shop Website JavaScript
 
 // Global cart functionality
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let cart = [];
+
+// Initialize cart from localStorage
+function initializeCart() {
+    try {
+        cart = JSON.parse(localStorage.getItem('cart')) || [];
+    } catch (error) {
+        console.error('Error loading cart from localStorage:', error);
+        cart = [];
+    }
+}
 
 // Cart functions
 function updateCartCount() {
@@ -127,7 +137,7 @@ function displayOrderSummary() {
     if (!orderItemsContainer) return;
 
     if (cart.length === 0) {
-        window.location.href = 'cart.html';
+        window.location.href = '/cart.html';
         return;
     }
 
@@ -252,7 +262,8 @@ function findElementsByText(text) {
 
 // Main initialization
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize cart count
+    // Initialize cart
+    initializeCart();
     updateCartCount();
 
     // Smooth scrolling for navigation links
@@ -340,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
             if (cart.length > 0) {
-                window.location.href = 'checkout.html';
+                window.location.href = '/checkout.html';
             } else {
                 showNotification('السلة فارغة! أضف بعض المنتجات أولاً.', 'warning');
             }
@@ -479,7 +490,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Global functions for checkout page
 function goToHome() {
-    window.location.href = 'index.html';
+    window.location.href = '/';
 }
 
 function viewOrder() {
