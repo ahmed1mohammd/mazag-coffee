@@ -1,0 +1,21 @@
+{
+  "name": "mazaj-coffee-website",
+  "version": "1.0.0",
+  "description": "Coffee shop website for Mazaj Coffee",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'No build step required for static site'",
+    "start": "echo 'Static site - serve index.html'"
+  },
+  "keywords": [
+    "coffee",
+    "website",
+    "restaurant",
+    "arabic"
+  ],
+  "author": "Mazaj Coffee",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
