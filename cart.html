@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سلة التسوق - مزاج</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'cairo': ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        'coffee-brown': '#8B4513',
+                        'coffee-dark': '#3E2723',
+                        'coffee-light': '#D7CCC8',
+                        'gold': '#FFD700',
+                        'cream': '#F5F5DC',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <header class="bg-coffee-dark text-white py-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=100&h=100&fit=crop&crop=center" alt="مزاج" class="w-full h-full object-cover rounded-full">
+                </div>
+                <h1 class="text-2xl font-bold text-gold">مزاج</h1>
+            </div>
+            <nav class="hidden md:flex space-x-6 space-x-reverse">
+                <a href="index.html" class="hover:text-gold transition-colors duration-300 font-medium">الرئيسية</a>
+                <a href="index.html#menu" class="hover:text-gold transition-colors duration-300 font-medium">القائمة</a>
+                <a href="index.html#products" class="hover:text-gold transition-colors duration-300 font-medium">المنتجات</a>
+                <a href="cart.html" class="text-gold font-medium">سلة التسوق</a>
+            </nav>
+            <a href="cart.html" class="relative">
+                <div class="bg-gold text-coffee-dark px-4 py-2 rounded-full font-semibold hover:bg-yellow-400 transition-all duration-300">
+                    سلة التسوق
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- Cart Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-coffee-dark mb-4">سلة التسوق</h2>
+                <p class="text-xl text-gray-600">راجع طلبك قبل المتابعة</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Cart Items -->
+                <div class="lg:col-span-2">
+                    <div id="cart-items" class="space-y-4">
+                        <!-- Cart items will be populated by JavaScript -->
+                    </div>
+                    
+                    <!-- Empty Cart Message -->
+                    <div id="empty-cart" class="text-center py-16 hidden">
+                        <div class="w-32 h-32 mx-auto mb-6 bg-gray-200 rounded-full flex items-center justify-center">
+                            <span class="text-6xl">🛒</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-600 mb-4">سلة التسوق فارغة</h3>
+                        <p class="text-gray-500 mb-8">أضف بعض المنتجات اللذيذة إلى سلة التسوق</p>
+                        <a href="index.html#products" class="bg-coffee-brown text-white px-8 py-3 rounded-full font-semibold hover:bg-coffee-dark transition-all duration-300">
+                            تصفح المنتجات
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+                        <h3 class="text-2xl font-bold text-coffee-dark mb-6">ملخص الطلب</h3>
+                        
+                        <div class="space-y-4 mb-6">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">عدد العناصر:</span>
+                                <span id="total-items" class="font-semibold">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">المجموع الفرعي:</span>
+                                <span id="subtotal" class="font-semibold">0 ريال</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">الضريبة (15%):</span>
+                                <span id="tax" class="font-semibold">0 ريال</span>
+                            </div>
+                            <hr class="border-gray-200">
+                            <div class="flex justify-between text-xl font-bold text-coffee-dark">
+                                <span>المجموع الكلي:</span>
+                                <span id="total">0 ريال</span>
+                            </div>
+                        </div>
+
+                        <button id="checkout-btn" class="w-full bg-coffee-brown text-white py-4 rounded-full font-semibold text-lg hover:bg-coffee-dark transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                            متابعة للدفع
+                        </button>
+
+                        <a href="index.html#products" class="block text-center text-coffee-brown hover:text-coffee-dark transition-colors mt-4">
+                            إضافة المزيد من المنتجات
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-coffee-dark text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center space-x-4 space-x-reverse mb-6">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=100&h=100&fit=crop&crop=center" alt="مزاج" class="w-full h-full object-cover rounded-full">
+                </div>
+                <h4 class="text-2xl font-bold text-gold">مزاج</h4>
+            </div>
+            <p class="text-gray-300 mb-4">أفضل قهوة في المملكة العربية السعودية</p>
+            <p class="text-gray-400">&copy; 2024 مزاج. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const emptyCart = document.getElementById('empty-cart');
+            const cartCount = document.getElementById('cart-count');
+            const totalItems = document.getElementById('total-items');
+            const subtotal = document.getElementById('subtotal');
+            const tax = document.getElementById('tax');
+            const total = document.getElementById('total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '';
+                emptyCart.classList.remove('hidden');
+                cartCount.textContent = '0';
+                totalItems.textContent = '0';
+                subtotal.textContent = '0 ريال';
+                tax.textContent = '0 ريال';
+                total.textContent = '0 ريال';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            emptyCart.classList.add('hidden');
+            cartCount.textContent = cart.length;
+            
+            let totalPrice = 0;
+            cartItemsContainer.innerHTML = cart.map((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                
+                return `
+                    <div class="bg-white rounded-2xl shadow-lg p-6 flex items-center space-x-6 space-x-reverse">
+                        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold text-coffee-dark mb-2">${item.name}</h4>
+                            <p class="text-gray-600 mb-2">${item.description}</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <button onclick="updateQuantity(${index}, -1)" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">-</button>
+                                    <span class="text-lg font-semibold">${item.quantity}</span>
+                                    <button onclick="updateQuantity(${index}, 1)" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">+</button>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-coffee-dark">${itemTotal} ريال</div>
+                                    <div class="text-sm text-gray-500">${item.price} ريال للواحد</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="removeItem(${index})" class="text-red-500 hover:text-red-700 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            const taxAmount = totalPrice * 0.15;
+            const finalTotal = totalPrice + taxAmount;
+
+            totalItems.textContent = cart.length;
+            subtotal.textContent = `${totalPrice} ريال`;
+            tax.textContent = `${taxAmount.toFixed(2)} ريال`;
+            total.textContent = `${finalTotal.toFixed(2)} ريال`;
+            checkoutBtn.disabled = false;
+        }
+
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        // Initialize cart display
+        updateCartDisplay();
+
+        // Checkout button
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            if (cart.length > 0) {
+                window.location.href = 'checkout.html';
+            } else {
+                showNotification('السلة فارغة! أضف بعض المنتجات أولاً.', 'warning');
+            }
+        });
+
+        // Simple notification system - one at a time
+        let currentNotification = null;
+
+        function showNotification(message, type = 'success') {
+            // Remove any existing notification
+            if (currentNotification) {
+                currentNotification.remove();
+                currentNotification = null;
+            }
+
+            const colors = {
+                success: 'bg-green-500',
+                warning: 'bg-yellow-500',
+                error: 'bg-red-500'
+            };
+            
+            const icons = {
+                success: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>`,
+                warning: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>`,
+                error: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>`
+            };
+            
+            currentNotification = document.createElement('div');
+            currentNotification.className = `fixed top-20 right-4 ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300 flex items-center space-x-3 space-x-reverse`;
+            currentNotification.innerHTML = `
+                <div class="flex-shrink-0">
+                    ${icons[type]}
+                </div>
+                <div class="flex-1">
+                    <p class="font-medium">${message}</p>
+                </div>
+                <button onclick="closeNotification()" class="flex-shrink-0 ml-4">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            `;
+            
+            document.body.appendChild(currentNotification);
+            
+            // Show notification
+            setTimeout(() => {
+                currentNotification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                closeNotification();
+            }, 3000);
+        }
+
+        function closeNotification() {
+            if (currentNotification) {
+                currentNotification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (currentNotification && currentNotification.parentElement) {
+                        currentNotification.remove();
+                    }
+                    currentNotification = null;
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>

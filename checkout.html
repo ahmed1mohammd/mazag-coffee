@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدفع - مزاج</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'cairo': ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        'coffee-brown': '#8B4513',
+                        'coffee-dark': '#3E2723',
+                        'coffee-light': '#D7CCC8',
+                        'gold': '#FFD700',
+                        'cream': '#F5F5DC',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <header class="bg-coffee-dark text-white py-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=100&h=100&fit=crop&crop=center" alt="مزاج" class="w-full h-full object-cover rounded-full">
+                </div>
+                <h1 class="text-2xl font-bold text-gold">مزاج</h1>
+            </div>
+            <nav class="hidden md:flex space-x-6 space-x-reverse">
+                <a href="index.html" class="hover:text-gold transition-colors duration-300 font-medium">الرئيسية</a>
+                <a href="index.html#menu" class="hover:text-gold transition-colors duration-300 font-medium">القائمة</a>
+                <a href="index.html#products" class="hover:text-gold transition-colors duration-300 font-medium">المنتجات</a>
+                <a href="cart.html" class="hover:text-gold transition-colors duration-300 font-medium">سلة التسوق</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Checkout Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-coffee-dark mb-4">تأكيد الطلب</h2>
+                <p class="text-xl text-gray-600">أدخل بياناتك لإتمام الطلب</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Order Summary -->
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-2xl font-bold text-coffee-dark mb-6">ملخص الطلب</h3>
+                    
+                    <div id="order-items" class="space-y-4 mb-6">
+                        <!-- Order items will be populated by JavaScript -->
+                    </div>
+                    
+                    <hr class="border-gray-200 mb-6">
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">عدد العناصر:</span>
+                            <span id="total-items" class="font-semibold">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">المجموع الفرعي:</span>
+                            <span id="subtotal" class="font-semibold">0 ريال</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">الضريبة (15%):</span>
+                            <span id="tax" class="font-semibold">0 ريال</span>
+                        </div>
+                        <hr class="border-gray-200">
+                        <div class="flex justify-between text-xl font-bold text-coffee-dark">
+                            <span>المجموع الكلي:</span>
+                            <span id="total">0 ريال</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checkout Form -->
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-2xl font-bold text-coffee-dark mb-6">بيانات الطلب</h3>
+                    
+                    <form id="checkout-form" class="space-y-6">
+                        <div>
+                            <label for="customer-name" class="block text-sm font-medium text-gray-700 mb-2">الاسم الكامل</label>
+                            <input type="text" id="customer-name" name="customerName" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-brown focus:border-transparent transition-all duration-300"
+                                placeholder="أدخل اسمك الكامل">
+                        </div>
+
+                        <div>
+                            <label for="table-number" class="block text-sm font-medium text-gray-700 mb-2">رقم الطاولة</label>
+                            <input type="number" id="table-number" name="tableNumber" required min="1" max="50"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-brown focus:border-transparent transition-all duration-300"
+                                placeholder="أدخل رقم الطاولة">
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف (اختياري)</label>
+                            <input type="tel" id="phone" name="phone"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-brown focus:border-transparent transition-all duration-300"
+                                placeholder="05xxxxxxxx">
+                        </div>
+
+                        <div>
+                            <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">ملاحظات إضافية (اختياري)</label>
+                            <textarea id="notes" name="notes" rows="3"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-brown focus:border-transparent transition-all duration-300"
+                                placeholder="أي ملاحظات خاصة بالطلب..."></textarea>
+                        </div>
+
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-green-700 font-medium">الدفع عند الاستلام</span>
+                            </div>
+                            <p class="text-green-600 text-sm mt-1">ستقوم بدفع المبلغ عند وصول الطلب إلى طاولتك</p>
+                        </div>
+
+                        <button type="submit" 
+                            class="w-full bg-coffee-brown text-white py-4 rounded-full font-semibold text-lg hover:bg-coffee-dark transition-all duration-300 transform hover:scale-105">
+                            تأكيد الطلب
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-coffee-dark mb-4">تم تأكيد الطلب!</h3>
+            <p class="text-gray-600 mb-6">شكراً لك! تم إرسال طلبك بنجاح وسيتم تحضيره قريباً.</p>
+            <div class="space-y-3">
+                <button onclick="goToHome()" class="w-full bg-coffee-brown text-white py-3 rounded-full font-semibold hover:bg-coffee-dark transition-all duration-300">
+                    العودة للرئيسية
+                </button>
+                <button onclick="viewOrder()" class="w-full bg-gray-200 text-gray-700 py-3 rounded-full font-semibold hover:bg-gray-300 transition-all duration-300">
+                    عرض تفاصيل الطلب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-coffee-dark text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center space-x-4 space-x-reverse mb-6">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=100&h=100&fit=crop&crop=center" alt="مزاج" class="w-full h-full object-cover rounded-full">
+                </div>
+                <h4 class="text-2xl font-bold text-gold">مزاج</h4>
+            </div>
+            <p class="text-gray-300 mb-4">أفضل قهوة في المملكة العربية السعودية</p>
+            <p class="text-gray-400">&copy; 2024 مزاج. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let orderData = {};
+
+        function displayOrderSummary() {
+            const orderItemsContainer = document.getElementById('order-items');
+            const totalItems = document.getElementById('total-items');
+            const subtotal = document.getElementById('subtotal');
+            const tax = document.getElementById('tax');
+            const total = document.getElementById('total');
+
+            if (cart.length === 0) {
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            let totalPrice = 0;
+            orderItemsContainer.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                
+                return `
+                    <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg">
+                            <div>
+                                <h4 class="font-semibold text-coffee-dark">${item.name}</h4>
+                                <p class="text-sm text-gray-500">الكمية: ${item.quantity}</p>
+                            </div>
+                        </div>
+                        <span class="font-semibold">${itemTotal} ريال</span>
+                    </div>
+                `;
+            }).join('');
+
+            const taxAmount = totalPrice * 0.15;
+            const finalTotal = totalPrice + taxAmount;
+
+            totalItems.textContent = cart.length;
+            subtotal.textContent = `${totalPrice} ريال`;
+            tax.textContent = `${taxAmount.toFixed(2)} ريال`;
+            total.textContent = `${finalTotal.toFixed(2)} ريال`;
+
+            orderData = {
+                items: cart,
+                subtotal: totalPrice,
+                tax: taxAmount,
+                total: finalTotal,
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        // Form submission
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const customerData = {
+                name: formData.get('customerName'),
+                tableNumber: formData.get('tableNumber'),
+                phone: formData.get('phone') || '',
+                notes: formData.get('notes') || ''
+            };
+
+            // Validate form
+            if (!customerData.name.trim()) {
+                showNotification('يرجى إدخال الاسم الكامل', 'error');
+                return;
+            }
+
+            if (!customerData.tableNumber || customerData.tableNumber < 1) {
+                showNotification('يرجى إدخال رقم طاولة صحيح', 'error');
+                return;
+            }
+
+            // Save order data
+            orderData.customer = customerData;
+            localStorage.setItem('currentOrder', JSON.stringify(orderData));
+            
+            // Clear cart
+            localStorage.removeItem('cart');
+            
+            // Show success modal
+            document.getElementById('success-modal').classList.remove('hidden');
+        });
+
+        // Simple notification system - one at a time
+        let currentNotification = null;
+
+        function showNotification(message, type = 'success') {
+            // Remove any existing notification
+            if (currentNotification) {
+                currentNotification.remove();
+                currentNotification = null;
+            }
+
+            const colors = {
+                success: 'bg-green-500',
+                warning: 'bg-yellow-500',
+                error: 'bg-red-500'
+            };
+            
+            const icons = {
+                success: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>`,
+                warning: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>`,
+                error: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>`
+            };
+            
+            currentNotification = document.createElement('div');
+            currentNotification.className = `fixed top-20 right-4 ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300 flex items-center space-x-3 space-x-reverse`;
+            currentNotification.innerHTML = `
+                <div class="flex-shrink-0">
+                    ${icons[type]}
+                </div>
+                <div class="flex-1">
+                    <p class="font-medium">${message}</p>
+                </div>
+                <button onclick="closeNotification()" class="flex-shrink-0 ml-4">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            `;
+            
+            document.body.appendChild(currentNotification);
+            
+            // Show notification
+            setTimeout(() => {
+                currentNotification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                closeNotification();
+            }, 3000);
+        }
+
+        function closeNotification() {
+            if (currentNotification) {
+                currentNotification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (currentNotification && currentNotification.parentElement) {
+                        currentNotification.remove();
+                    }
+                    currentNotification = null;
+                }, 300);
+            }
+        }
+
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+
+        function viewOrder() {
+            // Create order details modal
+            const orderModal = document.createElement('div');
+            orderModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            orderModal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-2xl mx-4 max-h-96 overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-coffee-dark">تفاصيل الطلب</h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-coffee-dark mb-2">بيانات العميل</h4>
+                            <p><strong>الاسم:</strong> ${orderData.customer.name}</p>
+                            <p><strong>رقم الطاولة:</strong> ${orderData.customer.tableNumber}</p>
+                            ${orderData.customer.phone ? `<p><strong>الهاتف:</strong> ${orderData.customer.phone}</p>` : ''}
+                            ${orderData.customer.notes ? `<p><strong>ملاحظات:</strong> ${orderData.customer.notes}</p>` : ''}
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-coffee-dark mb-2">المنتجات</h4>
+                            ${orderData.items.map(item => `
+                                <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                    <div>
+                                        <span class="font-semibold">${item.name}</span>
+                                        <span class="text-gray-500 text-sm"> × ${item.quantity}</span>
+                                    </div>
+                                    <span class="font-semibold">${item.price * item.quantity} ريال</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="bg-coffee-dark text-white p-4 rounded-lg">
+                            <div class="flex justify-between">
+                                <span>المجموع الفرعي:</span>
+                                <span>${orderData.subtotal} ريال</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>الضريبة (15%):</span>
+                                <span>${orderData.tax.toFixed(2)} ريال</span>
+                            </div>
+                            <div class="flex justify-between text-xl font-bold border-t border-white pt-2 mt-2">
+                                <span>المجموع الكلي:</span>
+                                <span>${orderData.total.toFixed(2)} ريال</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500">وقت الطلب: ${new Date(orderData.timestamp).toLocaleString('ar-SA')}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <button onclick="this.closest('.fixed').remove()" class="bg-coffee-brown text-white px-6 py-2 rounded-full hover:bg-coffee-dark transition-all duration-300">
+                            إغلاق
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(orderModal);
+        }
+
+        // Initialize
+        displayOrderSummary();
+    </script>
+</body>
+</html>
